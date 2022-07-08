@@ -1,1 +1,1 @@
-AutoHotkey.exe "C:\Users\JTWhitney\Documents\GitHub\AHK\ArchiveFile.ahk"
+AutoHotkey.exe "archivefile.ahk"
