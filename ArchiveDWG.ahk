@@ -13,17 +13,25 @@ for n, GivenPath in A_Args  ; For each parameter (or file dropped onto a script)
 
 ArchiveFile(filePath)
 {
-    SplitPath, filePath, fileName, fileDirectory, fileExtension, fileNameWithoutExtension, fileDriveLetter
-    MsgBox %fileName%
-    MsgBox %fileDirectory%
-    MsgBox %fileExtension%
-    MsgBox %fileNameWithoutExtension%
-    MsgBox %fileDriveLetter%
+    ; SplitPath, filePath, fileName, fileDirectory, fileExtension, fileNameWithoutExtension, fileDriveLetter
+    ; MsgBox %fileName%
+    ; MsgBox %fileDirectory%
+    ; MsgBox %fileExtension%
+    ; MsgBox %fileNameWithoutExtension%
+    ; MsgBox %fileDriveLetter%
     ;FileCopy, SourcePattern, DestPattern , Overwrite
+    
+    newFileSuffix := IncreaseLetterByOne("c")
+    MsgBox %newFileSuffix%
+    
     Return
 }
 
 IncreaseLetterByOne(letter)
 {
-    
+    StringUpper, letter, letter
+    asciiLetter := Asc(letter)
+    asciiLetter ++
+    returnValue := Chr(asciiLetter)
+    Return returnValue
 }
