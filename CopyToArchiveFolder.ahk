@@ -1,65 +1,105 @@
 ﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
-for n, givenPath in A_Args  ; For each parameter (or file dropped onto a script):
-{
-    ArchiveFile(givenPath)
-}
 
+SetWorkingDir, %A_ScriptDir%
 
 ArchiveFile(filePath)
 {
-    SplitPath, filePath, fileName, fileDirectory, fileExtension, fileNameWithoutExtension, fileDriveLetter
-    
-    lengthOfFileName := StrLen(fileNameWithoutExtension)    
-    fileSuffix := SubStr(fileNameWithoutExtension, lengthOfFileName - 1 , 1)
+    singleSlashFilePath := ReplaceDoubleSlashWithSingleSlash(filePath)
+    archiveFilePath := GetArchiveFilePath(singleSlashFilePath)
 
-    
-    
-    
-    
-    FileCopy, SourcePattern, DestPattern , Overwrite
-    
-    ;newFileSuffix := IncreaseLetterByOne("c")
-    
+    if (archiveFilePath == "")
+    {    
+        Return
+    }
+
+    if FileExist(archiveFilePath)
+    {
+        message = File '%archiveFilePath%' already exists.
+        MsgBox, 48,, %message%
+        Return
+    }
+    else
+    {
+        FileCopy, %singleSlashFilePath%, %archiveFilePath% , Overwrite
+        message = File '%singleSlashFilePath%' has been archived.
+        MsgBox, 64,, %message%
+    }
+
     Return
 }
 
 
-WriteArchivePathByFileExtension(directory, fileExtension)
+GetArchiveFilePath(sourceFilePath)
 {
-	IniWrite, %directory%, settings.ini, FileExtensionPaths, %fileExtension%
+    SplitPath, sourceFilePath, fileName, fileDirectory, fileExtension, fileNameWithoutExtension, fileDrivefileSuffix
+    archivePath := GetStoredArchivePathByFileExtension(fileExtension)
+    if (archivePath == "")
+    {
+        Return ""
+    }
+    Else
+    {
+        archiveFilePath := archivePath . "\" . fileName
+        Return archiveFilePath
+    }
+    
+}
+
+
+StoreArchivePathForFileExtension(directory, fileExtension)
+{
+	iniFile := A_WorkingDir . "\CopyToArchiveFolder.ini"
+    singleSlashedDirectory := ReplaceDoubleSlashWithSingleSlash(directory)
+    IniWrite, %singleSlashedDirectory%, %iniFile%, FileExtensionPaths, %fileExtension%
 	Return
 }
 
-GetFolderForFileExtension(fileExtension)
+GetStoredArchivePathByFileExtension(fileExtension)
 {
-	FileSelectFolder, directory
-	Return directory
+	iniFile := A_WorkingDir . "\CopyToArchiveFolder.ini"
+    IniRead, archivePath, %iniFile%, FileExtensionPaths, %fileExtension%, Null
+    if (archivePath == "Null")
+    {
+        FileSelectFolder, archivePath
+	    if archivePath = 
+        {
+            Return ""
+        }
+        Else
+        {
+            StoreArchivePathForFileExtension(archivePath, fileExtension)
+        }
+    }
+    Return ReplaceDoubleSlashWithSingleSlash(archivePath)
+}
+
+ReplaceDoubleSlashWithSingleSlash(filePath)
+{
+    doubleSlash := "\\"
+    singleSlash := "\"
+    result := RegExReplace(filePath, doubleSlash, singleSlash)
+    Return result
 }
 
 
-archivePath := GetFolderForFileExtension("txt")
-WriteArchivePathByFileExtension(archivePath, "txt")
-IniRead, archivePath, settings.ini, FileExtensionPaths, txt, Null
 
 
 
-if (archivePath == "Null")
+
+
+if (A_Args.Length() > 0)
 {
-	MsgBox Empty archivePath
+    for n, filePath in A_Args  ; For each parameter (or file dropped onto a script):
+    {
+        ArchiveFile(filePath)
+    }
 }
 Else
 {
-	MsgBox %archivePath%
-}
-if (noPath == "Null")
-{
-	MsgBox Empty noPath
-}
-Else
-{
-	MsgBox %noPath%
+    ;For debugging
+    ArchiveFile("C:\\temp\\Source\\BillE.txt")
 }
 
 
