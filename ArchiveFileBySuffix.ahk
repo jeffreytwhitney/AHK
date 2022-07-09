@@ -1,74 +1,104 @@
 ﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
-for n, givenPath in A_Args  ; For each parameter (or file dropped onto a script):
-{
-    ArchiveFile(givenPath)
-}
+
 
 
 ArchiveFile(filePath)
 {
-    SplitPath, filePath, fileName, fileDirectory, fileExtension, fileNameWithoutExtension, fileDriveLetter
+    archiveFilePath := GetArchiveFilePath(filePath)
+    MsgBox, %archiveFilePath%
     
-    lengthOfFileName := StrLen(fileNameWithoutExtension)    
-    fileSuffix := SubStr(fileNameWithoutExtension, lengthOfFileName - 1 , 1)
+    incrementedFilePath := GetIncrementedFilePath(filePath)
+    MsgBox, %incrementedFilePath%
+    
 
+
+    ; if (archiveFilePath == "")
+    ;     {
+    ;         Return
+    ;     }
     
     
+    ;FileCopy, SourcePattern, DestPattern , Overwrite
     
-    
-    FileCopy, SourcePattern, DestPattern , Overwrite
-    
-    ;newFileSuffix := IncreaseLetterByOne("c")
+    ;newFileSuffix := IncreasefileSuffixByOne("c")
     
     Return
 }
 
-
-WriteArchivePathByFileExtension(directory, fileExtension)
+GetIncrementedFilePath(sourceFilePath)
 {
-	IniWrite, %directory%, ArchiveFileBySuffix.ini, FileExtensionPaths, %fileExtension%
+    SplitPath, sourceFilePath, fileName, fileDirectory, fileExtension, fileNameWithoutExtension, fileDrivefileSuffix
+
+    currentFileSuffix := SubStr(fileNameWithoutExtension, StrLen(fileNameWithoutExtension) , 1)
+    incrementedFileSuffix := IncrementFileSuffix(currentFileSuffix)
+    incrementedFileName := SubStr(fileNameWithoutExtension, 0, StrLen(fileNameWithoutExtension)) + incrementedFileSuffix
+    incrementedFilePath := fileDirectory . "\\" . incrementedFileName
+
+    Return incrementedFilePath
+}
+
+GetArchiveFilePath(sourceFilePath)
+{
+    SplitPath, sourceFilePath, fileName, fileDirectory, fileExtension, fileNameWithoutExtension, fileDrivefileSuffix
+    archivePath := GetStoredArchivePathByFileExtension(fileExtension)
+    if (archivePath == "")
+    {
+        Return ""
+    }
+    Else
+    {
+        archiveFilePath := archivePath . "\" . fileName
+        Return archiveFilePath
+    }
+    
+}
+
+
+StoreArchivePathForFileExtension(directory, fileExtension)
+{
+	IniWrite, %directory%, %A_WorkingDir%\ArchiveFileBySuffix.ini, FileExtensionPaths, %fileExtension%
 	Return
 }
 
-GetFolderForFileExtension(fileExtension)
+GetStoredArchivePathByFileExtension(fileExtension)
 {
-	FileSelectFolder, directory
-	Return directory
+	IniRead, archivePath, %A_WorkingDir%\ArchiveFileBySuffix.ini, FileExtensionPaths, %fileExtension%, Null
+    if (archivePath == "Null")
+    {
+        FileSelectFolder, archivePath
+	    if archivePath = 
+        {
+            Return ""
+        }
+        Else
+        {
+            StoreArchivePathForFileExtension(archivePath, fileExtension)
+        }
+    }
+    Return archivePath
 }
 
-IncreaseLetterByOne(letter)
+IncrementFileSuffix(fileSuffix)
 {
-    StringUpper, letter, letter
-    asciiLetter := Asc(letter)
-    asciiLetter ++
-    returnValue := Chr(asciiLetter)
+    StringUpper, fileSuffix, fileSuffix
+    asciiFileSuffix := Asc(fileSuffix)
+    asciiFileSuffix ++
+    returnValue := Chr(asciiFileSuffix)
     Return returnValue
 }
 
-
-archivePath := GetFolderForFileExtension("txt")
-WriteArchivePathByFileExtension(archivePath, "txt")
-IniRead, archivePath, ArchiveFileBySuffix.ini, FileExtensionPaths, txt, Null
-
-
-
-if (archivePath == "Null")
+if (A_Args.Length() > 0)
 {
-	MsgBox Empty archivePath
+    for n, filePath in A_Args  ; For each parameter (or file dropped onto a script):
+    {
+        ArchiveFile(filePath)
+    }
 }
 Else
 {
-	MsgBox %archivePath%
-}
-if (noPath == "Null")
-{
-	MsgBox Empty noPath
-}
-Else
-{
-	MsgBox %noPath%
+    ArchiveFile("C:\\temp\\Source\\BillB.txt")
 }
 
 
