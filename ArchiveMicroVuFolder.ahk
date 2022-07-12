@@ -39,9 +39,8 @@ GetArchiveFilePath(sourceFilePath)
     numberOfParts := directoryParts.Length()
     lastPart := directoryParts[numberOfParts - 1]
     
-    ;archiveDirectory := "V:\\Inspect Programs\\Micro-Vu Archive\\Old Programs\\" . lastPart . "\\"
-    archiveDirectory := "C:\\temp\\Archive\\" . lastPart . "\\"
-    
+    archiveDirectory := "V:\\Inspect Programs\\Micro-Vu Archive\\Old Programs\\" . lastPart . "\\"
+       
     return archiveDirectory
     
 }
@@ -71,7 +70,7 @@ if (A_Args.Length() > 0)
 Else
 {
     ;For debugging
-    ArchiveDirectory("C:\\temp\\Source\\M987654321\\")
+    ;ArchiveDirectory("C:\\temp\\Source\\M987654321\\")
 }
 
 
