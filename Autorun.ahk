@@ -38,6 +38,11 @@
     OpenThreeFortyOneDirectory()
     Return
 
+#+6:: 
+    OpenY26()
+    Return
+
+
 #+g:: 
     OpenGageTrak()
     Return
@@ -54,71 +59,89 @@
     OpenSmartProfileDirectory()
     Return
 
-
+#+I:: 
+    OpenSetupPics()
+    Return
 
 
 OpenSolidWorks()
 {
-    MsgBox, OpenSolidWorks
+    run, "C:\Program Files\SOLIDWORKS Corp\SOLIDWORKS (2)\"
+    Return
+}
+
+
+
+
+OpenY26()
+{
+    run, explorer "\\rms-microvuy026\Microvu Programs"
+    Return
+}
+
+
+OpenSetupPics()
+{
+    run, explorer "V:\Inspect Programs\Micro-Vu\Approved Programs\Microvu\Microvu Setup Pics"
     Return
 }
 
 
 OpenCMMDirectory()
 {
-    MsgBox, OpenCMMDirectory
-    ;run, explorer "C:\"
+    run, explorer "V:\Inspect Programs\CMM Programs\B_S Approved Programs\PDF Approved Programs"
     Return
 }
 
 
 OpenWIPDirectory()
 {
-    MsgBox, OpenWIPDirectory
-    ;run, explorer "C:\"
+    run, explorer "X:\Quality Calibration\Work in Progress\Jeffrey"
     Return
 }
 
 
 OpenTickets()
 {
-    MsgBox, OpenTickets
+    ;http://10.146.2.11:8080/ehelpdesk/login.glml
     Return
 }
 
 OpenFourTwentyDirectory()
 {
-    MsgBox, OpenFourTwentyDirectory
-    ;run, explorer "C:\"
+    run, explorer "V:\Inspect Programs\Micro-Vu\Approved Programs\420\"
     Return
 }
 
 
 OpenThreeFortyOneDirectory()
 {
-    MsgBox, OpenThreeFortyOneDirectory
-    ;run, explorer "C:\"
+    run, explorer "V:\Inspect Programs\Micro-Vu\Approved Programs\341\"
     Return
 }
 
 OpenThreeElevenDirectory()
 {
-    MsgBox, OpenThreeElevenDirectory
-    ;run, explorer "C:\"
+    run, explorer "V:\Inspect Programs\Micro-Vu\Approved Programs\311\"
     Return
 }
 
 OpenOverlayDirectory()
 {
-    MsgBox, OpenOverlayDirectory
-    ;run, explorer "C:\"
+    run, explorer "V:\Inspect Programs\Overlays\"
     Return
 }
 
 OpenGageTrak()
 {
-    MsgBox, OpenGageTrak
-    Return
+    Run, "C:\Program Files (x86)\Common Files\Sagekey Software\StartAccess_2003.exe" /runtime  /wrkgrp "C:\gagetrak\system.mdw" "C:\gagetrak\Gtw68.mdb"
+    Sleep 3000
+	SendInput J. Whitney
+	SendInput {Tab}
+	SendRaw An0nym0us!
+	SendInput {Tab}
+	SendInput {Enter}
+	Return
 }
 
 OpenAutoCad()
@@ -129,23 +152,19 @@ OpenAutoCad()
 
 OpenSmartProfileDirectory()
 {
-    MsgBox, OpenSmartProfileDirectory
-    ; run, explorer "C:\"
+    run, explorer "V:\Inspect Programs\Micro-Vu\Approved Programs\Smart Profile"
     Return
 }
 
 OpenKeyenceDirectory()
 {
-    MsgBox, OpenKeyenceDirectory
-    ; run, explorer "C:\"
-    Return
+	run, explorer "V:\Inspect Programs\Keyence\"
+	Return
 }
 
 
 OpenOutlook()
 {
-    ; MsgBox, OpenOutlook
-    ; Return
     Process, Exist, outlook.exe
     If (ErrorLevel != 0)
     {
@@ -155,7 +174,6 @@ OpenOutlook()
     else
     {
         Run outlook.exe 
-        ; WinWaitActive ahk_class rctrl_renwnd32
     }
     
     Return
