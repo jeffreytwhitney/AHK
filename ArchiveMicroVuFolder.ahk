@@ -51,6 +51,7 @@ GetOutputPath(sourceFilePath)
     lastPart := directoryParts[numberOfParts]
     storedOutputDirectory := GetStoredOutputPath()
     
+<<<<<<< HEAD
     if storedOutputDirectory == ""
     {
          returnVal := ""
