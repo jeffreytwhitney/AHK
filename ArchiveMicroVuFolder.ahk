@@ -51,7 +51,6 @@ GetOutputPath(sourceFilePath)
     lastPart := directoryParts[numberOfParts]
     storedOutputDirectory := GetStoredOutputPath()
     
-<<<<<<< HEAD
     if storedOutputDirectory == ""
     {
          returnVal := ""
@@ -60,11 +59,6 @@ GetOutputPath(sourceFilePath)
     {
         returnVal := storedOutputDirectory . "\" . lastPart
     }
-=======
-    archiveDirectory := "V:\\Inspect Programs\\Micro-Vu Archive\\Old Programs\\" . lastPart . "\\"
-       
-    return archiveDirectory
->>>>>>> 7666cbcd3ae5bc5a7be9ca468c91f4d6ae05f96f
     
     return returnVal
 }
@@ -120,11 +114,7 @@ if (A_Args.Length() > 0)
 Else
 {
     ;For debugging
-<<<<<<< HEAD
     CopyFolderToWorkInProgress("C:\temp\Source\M23654789")
-=======
-    ;ArchiveDirectory("C:\\temp\\Source\\M987654321\\")
->>>>>>> 7666cbcd3ae5bc5a7be9ca468c91f4d6ae05f96f
 }
 
 

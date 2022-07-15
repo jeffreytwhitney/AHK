@@ -49,7 +49,7 @@ GetOutputPath(sourceFilePath)
     directoryParts := StrSplit(trimmedFilePath , "\")
     numberOfParts := directoryParts.Length()
     lastPart := directoryParts[numberOfParts]
-    outputDirectory := GetStoredOutputPath() . "\" . lastPart
+    outputDirectory := GetStoredOutputPath() 
     If (outputDirectory == "")
     {
         return ""
