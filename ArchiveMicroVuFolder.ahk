@@ -19,15 +19,9 @@ CopyFolderToWorkInProgress(sourceDirectory)
     
     if FileExist(outputDirectory)
     {
-        message = Directory '%outputDirectory%' already exists. Overwrite?
-        MsgBox, 36,, %message%
-        IfMsgBox No
-            Return
-        FileRemoveDir, %outputDirectory%, 1
-        FileCopyDir, %singleSlashFilePath%, %outputDirectory%, True
-        message = File '%singleSlashFilePath%' has been copied to your Work In Progress directory.
+        message = Directory '%outputDirectory%' already exists. 
         MsgBox, 64,, %message%
-        
+        Return
     }
     else
     {
@@ -51,7 +45,7 @@ GetOutputPath(sourceFilePath)
     lastPart := directoryParts[numberOfParts]
     storedOutputDirectory := GetStoredOutputPath()
     
-    if storedOutputDirectory == ""
+    if (storedOutputDirectory == "")
     {
          returnVal := ""
     }

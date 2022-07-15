@@ -63,10 +63,6 @@
     OpenSetupPics()
     Return
 
-#+m:: 
-    OpenOutlook()
-	OpenTickets()
-    Return
 
 
 OpenSolidWorks()
