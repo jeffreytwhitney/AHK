@@ -26,10 +26,9 @@ ArchiveFile(filePath)
     {
         message = File '%archiveFilePath%' already exists. Overwrite?
         MsgBox, 36,, %message%
-        IfMsgBox Yes
-           doArchive := True 
-        else
+        IfMsgBox No
            Return
+        doArchive := True 
     }
     else
     {
@@ -115,7 +114,7 @@ ReplaceDoubleSlashWithSingleSlash(filePath)
 {
     doubleSlash := "\\"
     singleSlash := "\"
-    result := RegExReplace(filePath, doubleSlash, singleSlash)
+    result := StrReplace(filePath, doubleSlash, singleSlash)
     Return result
 }
 

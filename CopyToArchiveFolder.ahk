@@ -63,7 +63,7 @@ GetStoredArchivePathByFileExtension(fileExtension)
     if (archivePath == "Null")
     {
         FileSelectFolder, archivePath
-	    if archivePath = 
+	    if (archivePath == "")
         {
             Return ""
         }
@@ -79,7 +79,7 @@ ReplaceDoubleSlashWithSingleSlash(filePath)
 {
     doubleSlash := "\\"
     singleSlash := "\"
-    result := RegExReplace(filePath, doubleSlash, singleSlash)
+    result := StrReplace(filePath, doubleSlash, singleSlash)
     Return result
 }
 

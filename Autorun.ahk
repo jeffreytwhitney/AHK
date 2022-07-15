@@ -59,8 +59,13 @@
     OpenSmartProfileDirectory()
     Return
 
-#+I:: 
+#+i:: 
     OpenSetupPics()
+    Return
+
+#+m:: 
+    OpenOutlook()
+	OpenTickets()
     Return
 
 
@@ -103,7 +108,12 @@ OpenWIPDirectory()
 
 OpenTickets()
 {
-    ;http://10.146.2.11:8080/ehelpdesk/login.glml
+    Run, http://10.146.2.11:8080/ehelpdesk/login.glml
+    sleep 1000
+    SendInput jtwhitney
+    SendInput {tab}
+    SendRaw An0nym0us!
+    SendInput {enter}
     Return
 }
 
@@ -139,7 +149,6 @@ OpenGageTrak()
 	SendInput J. Whitney
 	SendInput {Tab}
 	SendRaw An0nym0us!
-	SendInput {Tab}
 	SendInput {Enter}
 	Return
 }

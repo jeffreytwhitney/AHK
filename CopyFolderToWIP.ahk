@@ -49,18 +49,15 @@ GetOutputPath(sourceFilePath)
     directoryParts := StrSplit(trimmedFilePath , "\")
     numberOfParts := directoryParts.Length()
     lastPart := directoryParts[numberOfParts]
-    storedOutputDirectory := GetStoredOutputPath()
-    
-    if storedOutputDirectory == ""
+    outputDirectory := GetStoredOutputPath() . "\" . lastPart
+    If (outputDirectory == "")
     {
-         returnVal := ""
+        return ""
     }
     Else
     {
-        returnVal := storedOutputDirectory . "\" . lastPart
+        return outputDirectory . "\" . lastPart
     }
-    
-    return returnVal
 }
 
 
@@ -75,7 +72,7 @@ ReplaceDoubleSlashWithSingleSlash(filePath)
 
 StoreWorkInProgressPath(directory)
 {
-	iniFile := A_WorkingDir . "\ArchiveMicroVuFolder.ini"
+	iniFile := A_WorkingDir . "\CopyFolderToWorkInProgress.ini"
     singleSlashedDirectory := ReplaceDoubleSlashWithSingleSlash(directory)
     IniWrite, %singleSlashedDirectory%, %iniFile%, WorkInProgressPath, Path
 	Return
@@ -83,7 +80,7 @@ StoreWorkInProgressPath(directory)
 
 GetStoredOutputPath()
 {
-	iniFile := A_WorkingDir . "\ArchiveMicroVuFolder.ini"
+	iniFile := A_WorkingDir . "\CopyFolderToWorkInProgress.ini"
     IniRead, workInProgressPath, %iniFile%, WorkInProgressPath, Path, Null
     if (workInProgressPath == "Null")
     {
