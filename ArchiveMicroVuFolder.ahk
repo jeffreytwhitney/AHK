@@ -27,7 +27,7 @@ CopyFolderToWorkInProgress(sourceDirectory)
     {
         
         FileCopyDir, %singleSlashFilePath%, %outputDirectory%, True
-        message = File '%singleSlashFilePath%' has been copied to your Work In Progress directory.
+        message = File '%singleSlashFilePath%' has been copied to the MicroVu Archive Directory.
         MsgBox, 64,, %message%
     }
     
