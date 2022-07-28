@@ -4,16 +4,21 @@
 SetWorkingDir %A_ScriptDir%
 SetBatchLines -1
 
-Gui Add, Text, x23 y9 w111 h23 +0x200, Gage ID:
-Gui Add, Edit, x144 y9 w187 h21
-Gui Add, Text, x24 y38 w110 h23 +0x200, Results Message:
-Gui Add, Edit, x144 y38 w188 h21
-Gui Add, CheckBox, x144 y71 w120 h23, Set Printer
-Gui Add, Button, x260 y133 w80 h23, &Execute
+Gui, Add, Text,, First name:
+Gui, Add, Text,, Last name:
+Gui, Add, Edit, vFirstName ym  ; The ym option starts a new column of controls.
+Gui, Add, Edit, vLastName
+Gui, Add, Button, default, OK  ; The label ButtonOK (if it exists) will be run when the button is pressed.
+Gui, Show,, Simple Input Example
+return  ; End of auto-execute section. The script is idle until the user does something.
 
-Gui Show, w365 h169, Window
-Return
-
-GuiEscape:
 GuiClose:
-    ExitApp
+ButtonOK:
+Gui, Submit  ; Save the input from the user to each control's associated variable.
+MsgBox You entered "%FirstName% %LastName%".
+ExitApp
+
+
+
+ButtonExecute:
+    MsgBox %gageID%
