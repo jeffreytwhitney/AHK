@@ -63,6 +63,9 @@
     OpenSetupPics()
     Return
 
+#+b:: 
+    OpenBackup()
+    Return
 
 
 OpenSolidWorks()
@@ -72,6 +75,11 @@ OpenSolidWorks()
 }
 
 
+OpenBackup()
+{
+    run, explorer "C:\Backup\"
+    Return
+}
 
 
 OpenY26()
