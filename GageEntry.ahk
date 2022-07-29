@@ -58,7 +58,11 @@ EnterGageByGageID(gageID, resultsMessage, addLabel)
 		Return
 	}
 }
-;EnterGageByGageID("C-0718", "OK", false)
+
+InputBox, gageID, Enter GageID 
+InputBox, resultsMessage, Enter Message
+
+EnterGageByGageID(gageID, resultsMessage, false)
 
 
 Gui, Add, Text, x12 y19 w80 h20 , Gage ID

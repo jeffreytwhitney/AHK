@@ -4,9 +4,9 @@
 SetWorkingDir %A_ScriptDir%
 SetBatchLines -1
 
-Gui, Add, Text,, First name:
-Gui, Add, Text,, Last name:
-Gui, Add, Edit, vFirstName ym  ; The ym option starts a new column of controls.
+Gui, Add, Text,, Gage ID:
+Gui, Add, Text,, Results Message:
+Gui, Add, Edit, vFirstName ym  
 Gui, Add, Edit, vLastName
 Gui, Add, Button, default, OK  ; The label ButtonOK (if it exists) will be run when the button is pressed.
 Gui, Show,, Simple Input Example
@@ -20,5 +20,3 @@ ExitApp
 
 
 
-ButtonExecute:
-    MsgBox %gageID%
