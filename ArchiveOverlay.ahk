@@ -44,7 +44,7 @@ ArchiveFile(filePath)
 
     if (doArchive == True) 
     {    
-        FileCopy, %singleSlashFilePath%, %archiveFilePath% , Overwrite
+        FileCopy, %singleSlashFilePath%, %archiveFilePath%, 1
         FileMove, %singleSlashFilePath%, %incrementedFilePath%
         message = File '%singleSlashFilePath%' has been archived and renamed.
         MsgBox, 64,, %message%

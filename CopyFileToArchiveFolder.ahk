@@ -22,7 +22,7 @@ ArchiveFile(filePath)
     }
     else
     {
-        FileCopy, %singleSlashFilePath%, %archiveFilePath% , Overwrite
+        FileCopy, %singleSlashFilePath%, %archiveFilePath%, 1
         message = File '%singleSlashFilePath%' has been archived.
         MsgBox, 64,, %message%
     }

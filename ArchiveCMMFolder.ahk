@@ -26,7 +26,7 @@ CopyFolder(sourceDirectory)
     else
     {
         
-        FileCopyDir, %singleSlashFilePath%, %outputDirectory%, True
+        FileCopyDir, %singleSlashFilePath%, %outputDirectory%, 1
         message = Folder '%singleSlashFilePath%' has been copied to the CMM Archive Directory.
         MsgBox, 64,, %message%
     }

@@ -59,22 +59,6 @@ EnterGageByGageID(gageID, resultsMessage, addLabel)
 	}
 }
 
-InputBox, gageID, Enter GageID 
-InputBox, resultsMessage, Enter Message
 
-EnterGageByGageID(gageID, resultsMessage, false)
+; EnterGageByGageID("C-1140", "Calibration Successful", false)
 
-
-Gui, Add, Text, x12 y19 w80 h20 , Gage ID
-Gui, Add, Edit, x102 y19 w220 h20 , Edit
-Gui, Add, Text, x102 y169 w50 h-110 , Text
-Gui, Add, Text, x12 y49 w80 h20 , Results
-Gui, Add, Edit, x102 y49 w220 h20 , Edit
-Gui, Add, CheckBox, x102 y79 w90 h20 , Add Print Label
-Gui, Add, Button, x102 y119 w100 h30 , Execute
-
-Gui, Show, x127 y87 h274 w458, New GUI Window
-Return
-
-GuiClose:
-ExitApp

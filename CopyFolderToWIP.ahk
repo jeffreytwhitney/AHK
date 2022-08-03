@@ -24,7 +24,8 @@ CopyFolderToWorkInProgress(sourceDirectory)
         IfMsgBox No
             Return
         FileRemoveDir, %outputDirectory%, 1
-        FileCopyDir, %singleSlashFilePath%, %outputDirectory%, True
+        FileCreateDir, %outputDirectory%
+        FileCopy, %singleSlashFilePath%, %outputDirectory%, 1
         message = File '%singleSlashFilePath%' has been copied to your Work In Progress directory.
         MsgBox, 64,, %message%
         
@@ -32,7 +33,8 @@ CopyFolderToWorkInProgress(sourceDirectory)
     else
     {
         
-        FileCopyDir, %singleSlashFilePath%, %outputDirectory%, True
+        FileCreateDir, %outputDirectory%
+        FileCopy, %singleSlashFilePath%, %outputDirectory%, 1
         message = File '%singleSlashFilePath%' has been copied to your Work In Progress directory.
         MsgBox, 64,, %message%
     }
@@ -69,10 +71,17 @@ ReplaceDoubleSlashWithSingleSlash(filePath)
     Return result
 }
 
+GetIniFilePath()
+{
+    scriptNameSlices := StrSplit(A_ScriptName , ".")
+    scriptName := scriptNameSlices[1]
+    iniPath := A_WorkingDir . "\" scriptName . ".ini"
+    return iniPath
+}
 
 StoreWorkInProgressPath(directory)
 {
-	iniFile := A_WorkingDir . "\CopyFolderToWorkInProgress.ini"
+	iniFile := GetIniFilePath()
     singleSlashedDirectory := ReplaceDoubleSlashWithSingleSlash(directory)
     IniWrite, %singleSlashedDirectory%, %iniFile%, WorkInProgressPath, Path
 	Return
@@ -80,7 +89,7 @@ StoreWorkInProgressPath(directory)
 
 GetStoredOutputPath()
 {
-	iniFile := A_WorkingDir . "\CopyFolderToWorkInProgress.ini"
+	iniFile := GetIniFilePath()
     IniRead, workInProgressPath, %iniFile%, WorkInProgressPath, Path, Null
     if (workInProgressPath == "Null")
     {
