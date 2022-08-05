@@ -34,7 +34,12 @@ CopyFolder(sourceDirectory)
     Return
 }
 
-
+CopyFilesWithFileNameAppend(sourceDirectory, outputDirectory)
+{
+	;Loop, Files, % myFolder "\*", D																		
+	;myResult .= A_LoopFileName "`n"
+	;MsgBox % myResult
+}
 
 
 GetOutputPath(sourceFilePath)
