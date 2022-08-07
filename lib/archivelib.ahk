@@ -1,7 +1,5 @@
 ﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
-; #Warn  ; Enable warnings to assist with detecting common errors.
-SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
-SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+
 
 ReplaceDoubleSlashWithSingleSlash(filePath)
 {
@@ -11,7 +9,7 @@ ReplaceDoubleSlashWithSingleSlash(filePath)
     Return result
 }
 
-GetIniFilePath()
+GetIniFilePath(iniFileName)
 {
     scriptNameSlices := StrSplit(A_ScriptName , ".")
     scriptName := scriptNameSlices[1]
@@ -19,30 +17,41 @@ GetIniFilePath()
     Return iniPath
 }
 
-GetStoredOutputPath()
+
+GetStoredOutputFilePath(iniFileName)
 {
-	iniFile := GetIniFilePath()
-    IniRead, iniFilePath, %iniFile%, FilePath, Path, Null
-    if (iniFilePath == "Null")
+    outputPath = GetStoredIniValue("OutputFilePath", "Path", iniFileName)
+    if (outputPath == "Null")
     {
-        FileSelectFolder, iniFilePath
-	    if (iniFilePath == "")
+        FileSelectFolder, outputPath
+	    if (outputPath == "")
         {
             Return ""
         }
         Else
         {
-            StoreOutputPath(iniFilePath)
+            outputPath = ReplaceDoubleSlashWithSingleSlash(outputPath)
+            StoreIniValue(outputPath, iniFileName, "OutputFilePath", "Path")
+            return outputPath
         }
     }
-    
-    Return ReplaceDoubleSlashWithSingleSlash(iniFilePath)
 }
 
-StoreOutputPath(directory)
+
+GetStoredIniValue(iniSection, iniKey, iniFileName)
 {
-	iniFile := GetIniFilePath()
-    singleSlashedDirectory := ReplaceDoubleSlashWithSingleSlash(directory)
-    IniWrite, %singleSlashedDirectory%, %iniFile%, FilePath, Path
+	iniFilePath := GetIniFilePath(iniFileName)
+    IniRead, %iniValue%, %iniFilePath%, %iniSection%, %iniKey%, Null
+    Return iniValue
+}
+
+
+StoreIniValue(iniValue, iniFileName, iniSection, iniKey)
+{
+	iniFilePath := GetIniFilePath(iniFileName)
+    IniWrite, %iniValue%, %iniFilePath%, %iniSection%, %iniKey%
 	Return
 }
+
+
+

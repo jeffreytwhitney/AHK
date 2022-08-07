@@ -48,7 +48,7 @@ GetOutputPath(sourceFilePath)
     directoryParts := StrSplit(trimmedFilePath , "\")
     numberOfParts := directoryParts.Length()
     lastPart := directoryParts[numberOfParts]
-    outputDirectory := GetStoredOutputPath() 
+    outputDirectory := GetStoredOutputFilePath("ArchiveCMMFolder") 
     If (outputDirectory == "")
     {
         return ""
@@ -60,42 +60,6 @@ GetOutputPath(sourceFilePath)
 }
 
 
-ReplaceDoubleSlashWithSingleSlash(filePath)
-{
-    doubleSlash := "\\"
-    singleSlash := "\"
-    result := StrReplace(filePath, doubleSlash, singleSlash)
-    Return result
-}
-
-
-StoreWorkInProgressPath(directory)
-{
-	iniFile := A_WorkingDir . "\ArchiveCMMFolder.ini"
-    singleSlashedDirectory := ReplaceDoubleSlashWithSingleSlash(directory)
-    IniWrite, %singleSlashedDirectory%, %iniFile%, WorkInProgressPath, Path
-	Return
-}
-
-GetStoredOutputPath()
-{
-	iniFile := A_WorkingDir . "\ArchiveCMMFolder.ini"
-    IniRead, workInProgressPath, %iniFile%, WorkInProgressPath, Path, Null
-    if (workInProgressPath == "Null")
-    {
-        FileSelectFolder, workInProgressPath
-	    if (workInProgressPath == "")
-        {
-            Return ""
-        }
-        Else
-        {
-            StoreWorkInProgressPath(workInProgressPath)
-        }
-    }
-    
-    Return ReplaceDoubleSlashWithSingleSlash(workInProgressPath)
-}
 
 
 
