@@ -11,7 +11,7 @@ if (A_Args.Length() > 0)
 {
     for n, filePath in A_Args  
     {
-        CopyFolderWithOverwrite(filePath, "CopyFolderToWIP")
+        CopyFolderWithOverwrite(filePath, "CopyFolderToBackup")
     }
 }
 Else

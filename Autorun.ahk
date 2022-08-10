@@ -77,7 +77,7 @@ OpenSolidWorks()
 
 OpenBackup()
 {
-    run, explorer "C:\Users\JTWhitney\OneDrive - Cretex Companies, Inc\Backup\"
+    run, explorer "C:\Backup\"
     Return
 }
 

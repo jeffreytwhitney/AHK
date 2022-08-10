@@ -3,6 +3,7 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 
 SetWorkingDir, %A_ScriptDir%
+#Include <archivelib>
 
 ArchiveFile(filePath)
 {
@@ -31,75 +32,35 @@ ArchiveFile(filePath)
 }
 
 
-GetArchiveFilePath(sourceFilePath)
+GetArchiveFilePath(sourceFilePath, iniFileName)
 {
     SplitPath, sourceFilePath, fileName, fileDirectory, fileExtension, fileNameWithoutExtension, fileDrivefileSuffix
-    archivePath := GetStoredArchivePathByFileExtension(fileExtension)
+    archivePath := GetStoredIniValue("FileExtensionPaths", "fileExtension", iniFileName)
     if (archivePath == "")
     {
         Return ""
     }
     Else
     {
+        StoreIniValue(archivePath, iniFileName, "FileExtensionPaths", "fileExtension")
         archiveFilePath := archivePath . "\" . fileName
         Return archiveFilePath
     }
-    
 }
-
-
-StoreArchivePathForFileExtension(directory, fileExtension)
-{
-	iniFile := A_WorkingDir . "\BackupFileByExtension.ini"
-    singleSlashedDirectory := ReplaceDoubleSlashWithSingleSlash(directory)
-    IniWrite, %singleSlashedDirectory%, %iniFile%, FileExtensionPaths, %fileExtension%
-	Return
-}
-
-GetStoredArchivePathByFileExtension(fileExtension)
-{
-	iniFile := A_WorkingDir . "\BackupFileByExtension.ini"
-    IniRead, archivePath, %iniFile%, FileExtensionPaths, %fileExtension%, Null
-    if (archivePath == "Null")
-    {
-        FileSelectFolder, archivePath
-	    if (archivePath == "")
-        {
-            Return ""
-        }
-        Else
-        {
-            StoreArchivePathForFileExtension(archivePath, fileExtension)
-        }
-    }
-    Return ReplaceDoubleSlashWithSingleSlash(archivePath)
-}
-
-ReplaceDoubleSlashWithSingleSlash(filePath)
-{
-    doubleSlash := "\\"
-    singleSlash := "\"
-    result := StrReplace(filePath, doubleSlash, singleSlash)
-    Return result
-}
-
-
-
-
-
 
 
 if (A_Args.Length() > 0)
 {
     for n, filePath in A_Args  ; For each parameter (or file dropped onto a script):
     {
-        ArchiveFile(filePath)
+        ArchiveFile(filePath, "BackupFileByExtension")
     }
 }
 Else
 {
     ;For debugging
-    ArchiveFile("C:\\temp\\Source\\1A.txt")
+    ArchiveFile("C:\\temp\\Source\\1A.txt", "testWFileExtensions")
+    ArchiveFile("C:\\temp\\Source\\5A.rtf", "testWFileExtensions")
 }
 
 
