@@ -46,25 +46,12 @@ CopyFolderWithOverwrite(sourceDirectory, iniFileName)
             Return
         }
         FileRemoveDir, %outputDirectory%, 1
-        FileCreateDir, %outputDirectory%
-        FileCopy, %singleSlashFilePath%, %outputDirectory%, 1
-		if (ErrorCount != 0)
-		{
-			MsgBox %ErrorCount% files/folders could not be copied.
-			Return
-		}
-        message = File '%singleSlashFilePath%' has been copied to '%outputDirectory%'.
-        MsgBox, 64,, %message%
-        
     }
-    else
-    {
         
-        FileCreateDir, %outputDirectory%
-        FileCopy, %singleSlashFilePath%, %outputDirectory%, 1
-        message = File '%singleSlashFilePath%' has been copied to '%outputDirectory%'.
-        MsgBox, 64,, %message%
-    }
+    FileCreateDir, %outputDirectory%
+    FileCopy, %singleSlashFilePath%, %outputDirectory%, 1
+    message = File '%singleSlashFilePath%' has been copied to '%outputDirectory%'.
+    MsgBox, 64,, %message%
     
     Return
 }
