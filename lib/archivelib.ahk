@@ -35,7 +35,6 @@ CopyFolderWithOverwrite(sourceDirectory, iniFileName)
     {    
         Return
     }
-
     
     if FileExist(outputDirectory)
     {
@@ -49,7 +48,15 @@ CopyFolderWithOverwrite(sourceDirectory, iniFileName)
     }
         
     FileCreateDir, %outputDirectory%
-    FileCopy, %singleSlashFilePath%, %outputDirectory%, 1
+    
+    if !(FileExist(outputDirectory))
+    {
+        message = Unable to create directory '%outputDirectory%'. 
+        MsgBox, 64,, %message%
+        Return
+    }
+
+    CopyFilesWithRecursion(singleSlashFilePath, outputDirectory)
     message = File '%singleSlashFilePath%' has been copied to '%outputDirectory%'.
     MsgBox, 64,, %message%
     
@@ -68,7 +75,7 @@ CopyFolderWithFileNameAppend(sourceDirectory, iniFileName)
     
     if FileExist(outputDirectory)
     {
-        searchDirectory := sourceDirectory . "\*"
+        searchDirectory := sourceDirectory . "\*.*"
         Loop, Files, %searchDirectory% 															
 	    {    
             currentFileName := A_LoopFileName
@@ -116,6 +123,30 @@ GenerateOutputPath(sourceFilePath, iniFileName)
     {
         return outputDirectory . "\" . lastPart
     }
+}
+
+
+CopyFilesWithRecursion(sourceDirectory, outputDirectory)
+{
+    searchDirectory := sourceDirectory . "\*.*"
+    Loop, Files, %searchDirectory%, F 															
+    {    
+        sourceFilePath := A_LoopFileFullPath
+        outputFilePath := outputDirectory . "\" . A_LoopFileName
+        FileCopy, %sourceFilePath%, %outputFilePath%, 1   
+        if ErrorLevel
+        {
+            MsgBox, Could not copy "%A_LoopFileFullPath%" to "%outputFilePath%\%A_LoopFileName%"
+            Return
+        }
+    }
+   Loop, Files,  %searchDirectory%, D
+   {
+        sourceSubDirectory := A_LoopFileFullPath
+        outputSubDirectory := outputDirectory . "\" . A_LoopFileName
+        FileCreateDir, %outputSubDirectory%
+        CopyFilesWithRecursion(sourceSubDirectory, outputSubDirectory)
+   }
 }
 
 CopyFileWithFileNameAppend(currentFileName, outputDirectory, sourceDirectory)
