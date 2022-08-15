@@ -3,7 +3,7 @@
 CopyFolder(sourceDirectory, iniFileName)
 {
     singleSlashFilePath := ReplaceDoubleSlashWithSingleSlash(sourceDirectory)
-    outputDirectory := GenerateOutputPath(singleSlashFilePath, iniFileName)
+    outputDirectory := GenerateFolderOutputPath(singleSlashFilePath, iniFileName)
 
     if (outputDirectory == "")
     {    
@@ -29,7 +29,7 @@ CopyFolder(sourceDirectory, iniFileName)
 CopyFolderWithOverwrite(sourceDirectory, iniFileName)
 {
     singleSlashFilePath := ReplaceDoubleSlashWithSingleSlash(sourceDirectory)
-    outputDirectory := GenerateOutputPath(singleSlashFilePath, iniFileName)
+    outputDirectory := GenerateFolderOutputPath(singleSlashFilePath, iniFileName)
 
     if (outputDirectory == "")
     {    
@@ -66,7 +66,7 @@ CopyFolderWithOverwrite(sourceDirectory, iniFileName)
 CopyFolderWithFileNameAppend(sourceDirectory, iniFileName)
 {
     singleSlashFilePath := ReplaceDoubleSlashWithSingleSlash(sourceDirectory)
-    outputDirectory := GenerateOutputPath(singleSlashFilePath, iniFileName)
+    outputDirectory := GenerateFolderOutputPath(singleSlashFilePath, iniFileName)
 
     if (outputDirectory == "")
     {    
@@ -108,13 +108,13 @@ GetIniFilePath(iniFileName)
     Return iniPath
 }
 
-GenerateOutputPath(sourceFilePath, iniFileName)
+GenerateFolderOutputPath(sourceFilePath, iniFileName)
 {
     trimmedFilePath := RTrim(sourceFilePath, "\")
     directoryParts := StrSplit(trimmedFilePath , "\")
     numberOfParts := directoryParts.Length()
     lastPart := directoryParts[numberOfParts]
-    outputDirectory := GetStoredOutputFilePath(iniFileName) 
+    outputDirectory := GetFolderOutputPath(iniFileName) 
     If (outputDirectory == "")
     {
         return ""
@@ -125,6 +125,31 @@ GenerateOutputPath(sourceFilePath, iniFileName)
     }
 }
 
+CopyFile(filePath, iniFileName)
+{
+    singleSlashFilePath := ReplaceDoubleSlashWithSingleSlash(filePath)
+    archiveFilePath := GetFileOutputPath(singleSlashFilePath, iniFileName)
+
+    if (archiveFilePath == "")
+    {    
+        Return
+    }
+
+    if FileExist(archiveFilePath)
+    {
+        message = File '%archiveFilePath%' already exists.
+        MsgBox, 48,, %message%
+        Return
+    }
+    else
+    {
+        FileCopy, %singleSlashFilePath%, %archiveFilePath%, 1
+        message = File '%singleSlashFilePath%' has been copied to '%archiveFilePath%'.
+        MsgBox, 64,, %message%
+    }
+
+    Return
+}
 
 CopyFilesWithRecursion(sourceDirectory, outputDirectory)
 {
@@ -139,6 +164,11 @@ CopyFilesWithRecursion(sourceDirectory, outputDirectory)
             MsgBox, Could not copy "%A_LoopFileFullPath%" to "%outputFilePath%\%A_LoopFileName%"
             Return
         }
+		if !FileExist(outputFilePath)
+		{
+			MsgBox, It did not work.
+		}
+		
     }
    Loop, Files,  %searchDirectory%, D
    {
@@ -184,7 +214,24 @@ CopyFileWithFileNameAppend(currentFileName, outputDirectory, sourceDirectory)
     Return 
 }
 
-GetStoredOutputFilePath(iniFileName)
+GetFileOutputPath(sourceFilePath, iniFileName)
+{
+    SplitPath, sourceFilePath, fileName, fileDirectory, fileExtension, fileNameWithoutExtension, fileDrivefileSuffix
+    archivePath := GetStoredIniValue("FileExtensionPaths", "fileExtension", iniFileName)
+    if (archivePath == "")
+    {
+        Return ""
+    }
+    Else
+    {
+        StoreIniValue(archivePath, iniFileName, "FileExtensionPaths", "fileExtension")
+        archiveFilePath := archivePath . "\" . fileName
+        Return archiveFilePath
+    }
+}
+
+
+GetFolderOutputPath(iniFileName)
 {
     outputPath := GetStoredIniValue("OutputFilePath", "Path", iniFileName)
     if (outputPath == "Null")
