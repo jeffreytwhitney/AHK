@@ -3,87 +3,7 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 
 SetWorkingDir, %A_ScriptDir%
-
-ArchiveFile(filePath)
-{
-    singleSlashFilePath := ReplaceDoubleSlashWithSingleSlash(filePath)
-    archiveFilePath := GetArchiveFilePath(singleSlashFilePath)
-
-    if (archiveFilePath == "")
-    {    
-        Return
-    }
-
-    if FileExist(archiveFilePath)
-    {
-        message = File '%archiveFilePath%' already exists.
-        MsgBox, 48,, %message%
-        Return
-    }
-    else
-    {
-        FileCopy, %singleSlashFilePath%, %archiveFilePath%, 1
-        message = File '%singleSlashFilePath%' has been archived.
-        MsgBox, 64,, %message%
-    }
-
-    Return
-}
-
-
-GetArchiveFilePath(sourceFilePath)
-{
-    SplitPath, sourceFilePath, fileName, fileDirectory, fileExtension, fileNameWithoutExtension, fileDrivefileSuffix
-    archivePath := GetStoredArchivePathByFileExtension(fileExtension)
-    if (archivePath == "")
-    {
-        Return ""
-    }
-    Else
-    {
-        archiveFilePath := archivePath . "\" . fileName
-        Return archiveFilePath
-    }
-    
-}
-
-
-StoreArchivePathForFileExtension(directory, fileExtension)
-{
-	iniFile := A_WorkingDir . "\CopyFileToArchiveFolder.ini"
-    singleSlashedDirectory := ReplaceDoubleSlashWithSingleSlash(directory)
-    IniWrite, %singleSlashedDirectory%, %iniFile%, FileExtensionPaths, %fileExtension%
-	Return
-}
-
-GetStoredArchivePathByFileExtension(fileExtension)
-{
-	iniFile := A_WorkingDir . "\CopyFileToArchiveFolder.ini"
-    IniRead, archivePath, %iniFile%, FileExtensionPaths, %fileExtension%, Null
-    if (archivePath == "Null")
-    {
-        FileSelectFolder, archivePath
-	    if (archivePath == "")
-        {
-            Return ""
-        }
-        Else
-        {
-            StoreArchivePathForFileExtension(archivePath, fileExtension)
-        }
-    }
-    Return ReplaceDoubleSlashWithSingleSlash(archivePath)
-}
-
-ReplaceDoubleSlashWithSingleSlash(filePath)
-{
-    doubleSlash := "\\"
-    singleSlash := "\"
-    result := StrReplace(filePath, doubleSlash, singleSlash)
-    Return result
-}
-
-
+#Include <archivelib>
 
 
 
@@ -93,13 +13,13 @@ if (A_Args.Length() > 0)
 {
     for n, filePath in A_Args  ; For each parameter (or file dropped onto a script):
     {
-        ArchiveFile(filePath)
+        CopyFile(filePath, "CopyFileToArchiveFolder")
     }
 }
 Else
 {
     ;For debugging
-    ArchiveFile("C:\\temp\\Source\\1A.txt")
+    CopyFile("C:\\temp\\Source\\1A.txt", "CopyFileToArchiveFolder")
 }
 
 
