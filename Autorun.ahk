@@ -1,3 +1,7 @@
+; ^	{Ctrl}	
+; +	{Shift}	
+; !	{Alt}	
+; #	{LWin}
 #NoEnv
 #SingleInstance force
 

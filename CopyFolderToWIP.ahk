@@ -17,7 +17,7 @@ if (A_Args.Length() > 0)
 Else
 {
     ;For debugging
-    CopyFolderWithOverwrite("C:\temp\Source\M23654789", "test")
+    CopyFolderWithOverwrite("C:\Backup\TEST", "CopyFolderToWIP")
 }
 
 

@@ -60,5 +60,5 @@ EnterGageByGageID(gageID, resultsMessage, addLabel)
 }
 
 
- EnterGageByGageID("PM-0103", "PM Complete", false)
+ EnterGageByGageID("C-1264", "Calibration OK", false)
 

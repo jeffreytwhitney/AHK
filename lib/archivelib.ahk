@@ -2,8 +2,7 @@
 
 CopyFolder(sourceDirectory, iniFileName)
 {
-    singleSlashFilePath := ReplaceDoubleSlashWithSingleSlash(sourceDirectory)
-    outputDirectory := GenerateFolderOutputPath(singleSlashFilePath, iniFileName)
+    outputDirectory := GenerateFolderOutputPath(sourceDirectory, iniFileName)
 
     if (outputDirectory == "")
     {    
@@ -18,8 +17,8 @@ CopyFolder(sourceDirectory, iniFileName)
     }
     else
     {
-        FileCopyDir, %singleSlashFilePath%, %outputDirectory%, True
-        message = File '%singleSlashFilePath%' has been copied to '%outputDirectory%'.
+        FileCopyDir, %sourceDirectory%, %outputDirectory%, True
+        message = File '%sourceDirectory%' has been copied to '%outputDirectory%'.
         MsgBox, 64,, %message%
     }
     
@@ -28,8 +27,7 @@ CopyFolder(sourceDirectory, iniFileName)
 
 CopyFolderWithOverwrite(sourceDirectory, iniFileName)
 {
-    singleSlashFilePath := ReplaceDoubleSlashWithSingleSlash(sourceDirectory)
-    outputDirectory := GenerateFolderOutputPath(singleSlashFilePath, iniFileName)
+    outputDirectory := GenerateFolderOutputPath(sourceDirectory, iniFileName)
 
     if (outputDirectory == "")
     {    
@@ -48,7 +46,6 @@ CopyFolderWithOverwrite(sourceDirectory, iniFileName)
     }
         
     FileCreateDir, %outputDirectory%
-    
     if !(FileExist(outputDirectory))
     {
         message = Unable to create directory '%outputDirectory%'. 
@@ -56,8 +53,8 @@ CopyFolderWithOverwrite(sourceDirectory, iniFileName)
         Return
     }
 
-    CopyFilesWithRecursion(singleSlashFilePath, outputDirectory)
-    message = File '%singleSlashFilePath%' has been copied to '%outputDirectory%'.
+	CopyFilesWithRecursion(sourceDirectory, outputDirectory)
+    message = File '%sourceDirectory%' has been copied to '%outputDirectory%'.
     MsgBox, 64,, %message%
     
     Return
@@ -65,8 +62,8 @@ CopyFolderWithOverwrite(sourceDirectory, iniFileName)
 
 CopyFolderWithFileNameAppend(sourceDirectory, iniFileName)
 {
-    singleSlashFilePath := ReplaceDoubleSlashWithSingleSlash(sourceDirectory)
-    outputDirectory := GenerateFolderOutputPath(singleSlashFilePath, iniFileName)
+    
+    outputDirectory := GenerateFolderOutputPath(sourceDirectory, iniFileName)
 
     if (outputDirectory == "")
     {    
@@ -81,25 +78,17 @@ CopyFolderWithFileNameAppend(sourceDirectory, iniFileName)
             currentFileName := A_LoopFileName
             CopyFileWithFileNameAppend(currentFileName, outputDirectory, sourceDirectory)
         }
-        message = Folder '%singleSlashFilePath%' has been copied to '%outputDirectory%'.
+        message = Folder '%sourceDirectory%' has been copied to '%outputDirectory%'.
         MsgBox, 64,, %message%
     }
     else
     {
-        FileCopyDir, %singleSlashFilePath%, %outputDirectory%, 1
-        message = Folder '%singleSlashFilePath%' has been copied to '%outputDirectory%'.
+        FileCopyDir, %sourceDirectory%, %outputDirectory%, 1
+        message = Folder '%sourceDirectory%' has been copied to '%outputDirectory%'.
         MsgBox, 64,, %message%
     }
     
     Return
-}
-
-ReplaceDoubleSlashWithSingleSlash(filePath)
-{
-    doubleSlash := "\\"
-    singleSlash := "\"
-    result := StrReplace(filePath, doubleSlash, singleSlash)
-    Return result
 }
 
 GetIniFilePath(iniFileName)
@@ -127,8 +116,7 @@ GenerateFolderOutputPath(sourceFilePath, iniFileName)
 
 CopyFile(filePath, iniFileName)
 {
-    singleSlashFilePath := ReplaceDoubleSlashWithSingleSlash(filePath)
-    archiveFilePath := GetFileOutputPath(singleSlashFilePath, iniFileName)
+    archiveFilePath := GetFileOutputPath(filePath, iniFileName)
 
     if (archiveFilePath == "")
     {    
@@ -143,8 +131,8 @@ CopyFile(filePath, iniFileName)
     }
     else
     {
-        FileCopy, %singleSlashFilePath%, %archiveFilePath%, 1
-        message = File '%singleSlashFilePath%' has been copied to '%archiveFilePath%'.
+        FileCopy, %filePath%, %archiveFilePath%, 1
+        message = File '%filePath%' has been copied to '%archiveFilePath%'.
         MsgBox, 64,, %message%
     }
 
@@ -230,7 +218,6 @@ GetFileOutputPath(sourceFilePath, iniFileName)
     }
 }
 
-
 GetFolderOutputPath(iniFileName)
 {
     outputPath := GetStoredIniValue("OutputFilePath", "Path", iniFileName)
@@ -243,7 +230,6 @@ GetFolderOutputPath(iniFileName)
         }
         Else
         {
-            outputPath := ReplaceDoubleSlashWithSingleSlash(outputPath)
             StoreIniValue(outputPath, iniFileName, "OutputFilePath", "Path")
             return outputPath
         }
