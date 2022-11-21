@@ -59,6 +59,21 @@ EnterGageByGageID(gageID, resultsMessage, addLabel)
 	}
 }
 
+EnterGageBySerialNumber(gageID, resultsMessage, addLabel)
+{
+	WinActivate, GAGEtrak 6.8 ahk_class OMain
+	Sleep, 333
+	Click, 350, 74 
+	Sleep, 1000
+	WinActivate, Filter Gage Entry ahk_class OFormPopup
+	Sleep, 100
+	
+	
+	
+	Return
+}
 
- EnterGageByGageID("C-1264", "Calibration OK", false)
+
+
+ ;EnterGageByGageID("U-4312", "OK", false)
 

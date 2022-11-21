@@ -205,14 +205,14 @@ CopyFileWithFileNameAppend(currentFileName, outputDirectory, sourceDirectory)
 GetFileOutputPath(sourceFilePath, iniFileName)
 {
     SplitPath, sourceFilePath, fileName, fileDirectory, fileExtension, fileNameWithoutExtension, fileDrivefileSuffix
-    archivePath := GetStoredIniValue("FileExtensionPaths", "fileExtension", iniFileName)
+    archivePath := GetStoredIniValue("FileExtensionPaths", fileExtension, iniFileName)
     if (archivePath == "")
     {
         Return ""
     }
     Else
     {
-        StoreIniValue(archivePath, iniFileName, "FileExtensionPaths", "fileExtension")
+        StoreIniValue(archivePath, iniFileName, "FileExtensionPaths", fileExtension)
         archiveFilePath := archivePath . "\" . fileName
         Return archiveFilePath
     }

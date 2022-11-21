@@ -10,14 +10,14 @@ if (A_Args.Length() > 0)
 {
     for n, filePath in A_Args  ; For each parameter (or file dropped onto a script):
     {
-        CopyFolderWithOverwrite(filePath, "BackupFileByExtension")
+        CopyFile(filePath, "BackupFileByExtension")
     }
 }
 Else
 {
     ;For debugging
-    CopyFolderWithOverwrite("C:\temp\Source\1A.txt", "testWFileExtensions")
-    CopyFolderWithOverwrite("C:\temp\Source\5A.rtf", "testWFileExtensions")
+    CopyFile("C:\temp\Source\1A.txt", "testWFileExtensions")
+    CopyFile("C:\temp\Source\5A.rtf", "testWFileExtensions")
 }
 
 
