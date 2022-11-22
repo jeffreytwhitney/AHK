@@ -206,15 +206,19 @@ GetFileOutputPath(sourceFilePath, iniFileName)
 {
     SplitPath, sourceFilePath, fileName, fileDirectory, fileExtension, fileNameWithoutExtension, fileDrivefileSuffix
     archivePath := GetStoredIniValue("FileExtensionPaths", fileExtension, iniFileName)
-    if (archivePath == "")
+    if (archivePath == "Null")
     {
-        Return ""
-    }
-    Else
-    {
-        StoreIniValue(archivePath, iniFileName, "FileExtensionPaths", fileExtension)
-        archiveFilePath := archivePath . "\" . fileName
-        Return archiveFilePath
+        FileSelectFolder, outputPath
+        if (outputPath == "")
+        {
+            Return ""
+        }
+        Else
+        {
+            StoreIniValue(outputPath, iniFileName, "FileExtensionPaths", fileExtension)
+            archiveFilePath := outputPath . "\" . fileName
+            Return archiveFilePath
+        }
     }
 }
 
