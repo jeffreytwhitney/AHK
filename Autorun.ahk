@@ -5,6 +5,9 @@
 #NoEnv
 #SingleInstance force
 
+^n::
+    OpenEverything()
+    Return
 
 #+o:: 
     OpenOutlook()
@@ -179,6 +182,10 @@ OpenKeyenceDirectory()
 	Return
 }
 
+OpenEverything()
+{
+    Run, "C:\Program Files\Everything\Everything.exe"
+}
 
 OpenOutlook()
 {

@@ -3,12 +3,12 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 
 SetWorkingDir, %A_ScriptDir%
+#Include <archivelib>
 
-ArchiveFile(filePath)
+ArchiveOverlay(filePath, iniFileName)
 {
-    singleSlashFilePath := ReplaceDoubleSlashWithSingleSlash(filePath)
-    archiveFilePath := GetArchiveFilePath(singleSlashFilePath)
-    incrementedFilePath := GetIncrementedFilePath(singleSlashFilePath)
+    archiveFilePath := GetFileOutputPath(filePath, iniFileName)
+    incrementedFilePath := GetIncrementedFilePath(filePath)
 
     if (archiveFilePath == "")
     {    
@@ -44,9 +44,9 @@ ArchiveFile(filePath)
 
     if (doArchive == True) 
     {    
-        FileCopy, %singleSlashFilePath%, %archiveFilePath%, 1
-        FileMove, %singleSlashFilePath%, %incrementedFilePath%
-        message = File '%singleSlashFilePath%' has been archived and renamed.
+        FileCopy, %filePath%, %archiveFilePath%, 1
+        FileMove, %filePath%, %incrementedFilePath%
+        message = File '%filePath%' has been archived and renamed.
         MsgBox, 64,, %message%
     }
     
@@ -66,59 +66,6 @@ GetIncrementedFilePath(sourceFilePath)
     Return incrementedFilePath
 }
 
-GetArchiveFilePath(sourceFilePath)
-{
-    SplitPath, sourceFilePath, fileName, fileDirectory, fileExtension, fileNameWithoutExtension, fileDrivefileSuffix
-    archivePath := GetStoredArchivePathByFileExtension(fileExtension)
-    if (archivePath == "")
-    {
-        Return ""
-    }
-    Else
-    {
-        archiveFilePath := archivePath . "\" . fileName
-        Return archiveFilePath
-    }
-    
-}
-
-
-StoreArchivePathForFileExtension(directory, fileExtension)
-{
-	iniFile := A_WorkingDir . "\ArchiveOverlay.ini"
-    singleSlashedDirectory := ReplaceDoubleSlashWithSingleSlash(directory)
-    IniWrite, %singleSlashedDirectory%, %iniFile%, FileExtensionPaths, %fileExtension%
-	Return
-}
-
-GetStoredArchivePathByFileExtension(fileExtension)
-{
-	iniFile := A_WorkingDir . "\ArchiveOverlay.ini"
-    IniRead, archivePath, %iniFile%, FileExtensionPaths, %fileExtension%, Null
-    if (archivePath == "Null")
-    {
-        FileSelectFolder, archivePath
-	    if archivePath = 
-        {
-            Return ""
-        }
-        Else
-        {
-            StoreArchivePathForFileExtension(archivePath, fileExtension)
-        }
-    }
-    Return ReplaceDoubleSlashWithSingleSlash(archivePath)
-}
-
-ReplaceDoubleSlashWithSingleSlash(filePath)
-{
-    doubleSlash := "\\"
-    singleSlash := "\"
-    result := StrReplace(filePath, doubleSlash, singleSlash)
-    Return result
-}
-
-
 IncrementFileSuffix(fileSuffix)
 {
     StringUpper, fileSuffix, fileSuffix
@@ -136,13 +83,13 @@ if (A_Args.Length() > 0)
 {
     for n, filePath in A_Args  ; For each parameter (or file dropped onto a script):
     {
-        ArchiveFile(filePath)
+        ArchiveOverlay(filePath, "ArchiveOverlay")
     }
 }
 Else
 {
     ;For debugging
-    ArchiveFile("C:\\temp\\Source\\1A.txt")
+    ArchiveOverlay("C:\\temp\\Source\\1C.txt", "ArchiveOverlayTest")
 }
 
 
