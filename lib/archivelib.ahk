@@ -1,14 +1,14 @@
-﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+﻿#NoEnv ; Recommended for performance and compatibility with future AutoHotkey releases.
 
 CopyFolder(sourceDirectory, iniFileName)
 {
     outputDirectory := GenerateFolderOutputPath(sourceDirectory, iniFileName)
 
     if (outputDirectory == "")
-    {    
+    { 
         Return
     }
-    
+
     if FileExist(outputDirectory)
     {
         message = Directory '%outputDirectory%' already exists. 
@@ -21,7 +21,7 @@ CopyFolder(sourceDirectory, iniFileName)
         message = File '%sourceDirectory%' has been copied to '%outputDirectory%'.
         MsgBox, 64,, %message%
     }
-    
+
     Return
 }
 
@@ -30,10 +30,10 @@ CopyFolderWithOverwrite(sourceDirectory, iniFileName)
     outputDirectory := GenerateFolderOutputPath(sourceDirectory, iniFileName)
 
     if (outputDirectory == "")
-    {    
+    { 
         Return
     }
-    
+
     if FileExist(outputDirectory)
     {
         message = Directory '%outputDirectory%' already exists. Overwrite?
@@ -44,7 +44,7 @@ CopyFolderWithOverwrite(sourceDirectory, iniFileName)
         }
         FileRemoveDir, %outputDirectory%, 1
     }
-        
+
     FileCreateDir, %outputDirectory%
     if !(FileExist(outputDirectory))
     {
@@ -53,28 +53,28 @@ CopyFolderWithOverwrite(sourceDirectory, iniFileName)
         Return
     }
 
-	CopyFilesWithRecursion(sourceDirectory, outputDirectory)
+    CopyFilesWithRecursion(sourceDirectory, outputDirectory)
     message = File '%sourceDirectory%' has been copied to '%outputDirectory%'.
     MsgBox, 64,, %message%
-    
+
     Return
 }
 
 CopyFolderWithFileNameAppend(sourceDirectory, iniFileName)
 {
-    
+
     outputDirectory := GenerateFolderOutputPath(sourceDirectory, iniFileName)
 
     if (outputDirectory == "")
-    {    
+    { 
         Return
     }
-    
+
     if FileExist(outputDirectory)
     {
         searchDirectory := sourceDirectory . "\*.*"
         Loop, Files, %searchDirectory% 															
-	    {    
+        { 
             currentFileName := A_LoopFileName
             CopyFileWithFileNameAppend(currentFileName, outputDirectory, sourceDirectory)
         }
@@ -87,7 +87,7 @@ CopyFolderWithFileNameAppend(sourceDirectory, iniFileName)
         message = Folder '%sourceDirectory%' has been copied to '%outputDirectory%'.
         MsgBox, 64,, %message%
     }
-    
+
     Return
 }
 
@@ -119,7 +119,7 @@ CopyFile(filePath, iniFileName)
     archiveFilePath := GetFileOutputPath(filePath, iniFileName)
 
     if (archiveFilePath == "")
-    {    
+    { 
         Return
     }
 
@@ -143,28 +143,28 @@ CopyFilesWithRecursion(sourceDirectory, outputDirectory)
 {
     searchDirectory := sourceDirectory . "\*.*"
     Loop, Files, %searchDirectory%, F 															
-    {    
+    { 
         sourceFilePath := A_LoopFileFullPath
         outputFilePath := outputDirectory . "\" . A_LoopFileName
-        FileCopy, %sourceFilePath%, %outputFilePath%, 1   
+        FileCopy, %sourceFilePath%, %outputFilePath%, 1 
         if ErrorLevel
         {
             MsgBox, Could not copy "%A_LoopFileFullPath%" to "%outputFilePath%\%A_LoopFileName%"
             Return
         }
-		if !FileExist(outputFilePath)
-		{
-			MsgBox, It did not work.
-		}
-		
+        if !FileExist(outputFilePath)
+        {
+            MsgBox, It did not work.
+        }
+
     }
-   Loop, Files,  %searchDirectory%, D
-   {
+    Loop, Files, %searchDirectory%, D
+    {
         sourceSubDirectory := A_LoopFileFullPath
         outputSubDirectory := outputDirectory . "\" . A_LoopFileName
         FileCreateDir, %outputSubDirectory%
         CopyFilesWithRecursion(sourceSubDirectory, outputSubDirectory)
-   }
+    }
 }
 
 CopyFileWithFileNameAppend(currentFileName, outputDirectory, sourceDirectory)
@@ -197,8 +197,7 @@ CopyFileWithFileNameAppend(currentFileName, outputDirectory, sourceDirectory)
     {
         FileCopy %sourceFileName%, %outputFileName%
     }
-    
-    
+
     Return 
 }
 
@@ -233,7 +232,7 @@ GetFolderOutputPath(iniFileName)
     if (outputPath == "Null")
     {
         FileSelectFolder, outputPath
-	    if (outputPath == "")
+        if (outputPath == "")
         {
             Return ""
         }
@@ -251,15 +250,15 @@ GetFolderOutputPath(iniFileName)
 
 GetStoredIniValue(iniSection, iniKey, iniFileName)
 {
-	iniFilePath := GetIniFilePath(iniFileName)
+    iniFilePath := GetIniFilePath(iniFileName)
     IniRead, iniValue, %iniFilePath%, %iniSection%, %iniKey%, Null
     Return iniValue
 }
 
 StoreIniValue(iniValue, iniFileName, iniSection, iniKey)
 {
-	iniFilePath := GetIniFilePath(iniFileName)
+    iniFilePath := GetIniFilePath(iniFileName)
     IniWrite, %iniValue%, %iniFilePath%, %iniSection%, %iniKey%
-	Return
+    Return
 }
 

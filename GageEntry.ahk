@@ -36,7 +36,7 @@ EnterGageByGageID(gageID, resultsMessage, addLabel)
 	Sleep, 333
 	SendInput ^{+}
 	SendInput, {TAB 6}
-	SendInput, C
+	SendInput, CALIBRATION
 	Sleep, 10
 	SendInput, {Enter}
 	SendInput, {TAB 2}
@@ -75,5 +75,5 @@ EnterGageBySerialNumber(gageID, resultsMessage, addLabel)
 
 
 
- ;EnterGageByGageID("U-4312", "OK", false)
+ EnterGageByGageID("PM-0031", "OK", false)
 
