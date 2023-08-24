@@ -13,13 +13,19 @@ if (A_Args.Length() > 0)
 {
     for n, filePath in A_Args  
     {
-        CopyFolder(filePath, "ArchiveMicroVuFolder")
+        filePathSubDirectory := GetMicroVuFolderSubDirectory(filePath)
+        if (filePathSubDirectory != "")
+        { 
+            CopyFolderToSubDirectoryWithFileNameAppend(filePath, filePathSubDirectory, "ArchiveMicroVuFolder")
+        }
     }
 }
 Else
 {
     ;For debugging
-    CopyFolder("C:\temp\Source\M23654789", "test")
+
+    filePathSubDirectory := GetMicroVuFolderSubDirectory("V:\Inspect Programs\Micro-Vu\Approved Programs\311\Pacing\23-01-2211_REV D")
+    CopyFolderToSubDirectoryWithFileNameAppend("V:\Inspect Programs\Micro-Vu\Approved Programs\311\Pacing\23-01-2211_REV D", filePathSubDirectory, "test")
 }
 
 

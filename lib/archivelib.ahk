@@ -76,7 +76,7 @@ CopyFolderWithFileNameAppend(sourceDirectory, iniFileName)
         Loop, Files, %searchDirectory% 															
         { 
             currentFileName := A_LoopFileName
-            CopyFileWithFileNameAppend(currentFileName, outputDirectory, sourceDirectory)
+            CopyFileWithFileNameAppend(currentFileName, outputDirectory, sourceDirectory, false)
         }
         message = Folder '%sourceDirectory%' has been copied to '%outputDirectory%'.
         MsgBox, 64,, %message%
@@ -85,6 +85,39 @@ CopyFolderWithFileNameAppend(sourceDirectory, iniFileName)
     {
         FileCopyDir, %sourceDirectory%, %outputDirectory%, 1
         message = Folder '%sourceDirectory%' has been copied to '%outputDirectory%'.
+        MsgBox, 64,, %message%
+    }
+
+    Return
+}
+
+CopyFolderToSubDirectoryWithFileNameAppend(sourceDirectory, subDirectory, iniFileName)
+{
+
+    outputDirectory := GenerateFolderOutputPath(sourceDirectory, iniFileName)
+
+    if (outputDirectory == "")
+    { 
+        Return
+    }
+
+    outputSubDirectory := outputDirectory . "\" . subDirectory
+
+    if FileExist(outputSubDirectory)
+    {
+        searchDirectory := sourceDirectory . "\*.*"
+        Loop, Files, %searchDirectory% 															
+        { 
+            currentFileName := A_LoopFileName
+            CopyFileWithFileNameAppend(currentFileName, outputSubDirectory, sourceDirectory, false)
+        }
+        message = Folder '%sourceDirectory%' has been copied to '%outputSubDirectory%'.
+        MsgBox, 64,, %message%
+    }
+    else
+    {
+        FileCopyDir, %sourceDirectory%, %outputSubDirectory%, 1
+        message = Folder '%sourceDirectory%' has been copied to '%outputSubDirectory%'.
         MsgBox, 64,, %message%
     }
 
@@ -167,13 +200,51 @@ CopyFilesWithRecursion(sourceDirectory, outputDirectory)
     }
 }
 
-CopyFileWithFileNameAppend(currentFileName, outputDirectory, sourceDirectory)
+CopyMicroVuFile(sourceFilePath, iniFileName)
+{
+    fileNameParts := StrSplit(sourceFilePath , "\") 
+    filename := fileNameParts[fileNameParts.Count()]
+    outputDirectory := GetFolderOutputPath(iniFileName) 
+    subDirectory := GetMicroVuFileSubDirectory(sourceFilePath)
+    outputDirectory .= subDirectory
+    sourceDirectory := ExtractDirectoryFromFilePath(sourceFilePath)
+
+    CopyFileWithFileNameAppend(filename, outputDirectory, sourceDirectory, true)
+
+}
+
+ExtractDirectoryFromFilePath(sourceFilePath)
+{
+    outputPath := ""
+    fileNameParts := StrSplit(sourceFilePath , "\")
+    tmp_last := fileNameParts.Count()
+    for filePartIdx in fileNameParts
+    {
+        if filePartIdx < %tmp_last%
+        {
+            if outputPath != 
+            {
+                outputPath .= "\"
+            }
+            file_part := fileNameParts[filePartIdx] 
+            outputPath .= file_part 
+        }
+    }
+    return outputPath
+}
+
+CopyFileWithFileNameAppend(currentFileName, outputDirectory, sourceDirectory, showMessageBox)
 {
     sourceFileName := sourceDirectory . "\" . currentFileName
     outputFileName := outputDirectory . "\" . currentFileName
     fileNameParts := StrSplit(currentFileName , ".")
     fileStem := fileNameParts[1]
     fileExtension := "." . fileNameParts[2]
+
+    if !FileExist(outputDirectory) 
+    {
+        FileCreateDir, %outputDirectory%
+    }
 
     fileNameSuffix := 0
     if FileExist(outputFileName)
@@ -196,6 +267,12 @@ CopyFileWithFileNameAppend(currentFileName, outputDirectory, sourceDirectory)
     Else
     {
         FileCopy %sourceFileName%, %outputFileName%
+    }
+
+    if showMessageBox
+    {
+        message = File '%currentFileName%' has been copied to '%outputFileName%'.
+        MsgBox, 64,, %message%
     }
 
     Return 
@@ -246,6 +323,79 @@ GetFolderOutputPath(iniFileName)
     {
         return outputPath
     }
+}
+
+GetMicroVuFileSubDirectory(dirToCheck)
+{
+    machineTypeSubDirectory := ""
+    partNameSubDirectory := ""
+    fileNameParts := StrSplit(dirToCheck , "\")
+    tmp_last := fileNameParts.Count()
+    return_value = ""
+    
+    If InStr(dirToCheck, "\311\")
+    {
+        machineTypeSubDirectory :=  "311"
+    }
+
+    If InStr(dirToCheck, "\341\")
+    {
+        machineTypeSubDirectory :=  "341"
+    }
+
+    If InStr(dirToCheck, "\420\")
+    {
+        machineTypeSubDirectory :=  "420"
+    }
+
+    for file_part_idx in fileNameParts
+    {
+        file_part := fileNameParts[file_part_idx]
+        if file_part = %machineTypeSubDirectory%
+        {
+            project_name_index := file_part_idx
+            project_name_index += 2
+            if tmp_last >= %project_name_index%
+            {
+                partNameSubDirectory := fileNameParts[project_name_index]
+            }
+        }
+    }
+    
+    If machineTypeSubDirectory != "" && partNameSubDirectory != ""
+    {
+        return_value := "\" . partNameSubDirectory . "\" . machineTypeSubDirectory 
+    }
+    Else
+    {
+        return_value = ""
+    }
+
+    return return_value
+    
+}
+
+GetMicroVuFolderSubDirectory(dirToCheck)
+{
+    subDirectory = ""
+    
+    If InStr(dirToCheck, "\311\")
+    {
+        subDirectory :=  "311"
+    }
+
+    If InStr(dirToCheck, "\341\")
+    {
+        subDirectory :=  "341"
+    }
+
+    If InStr(dirToCheck, "\420\")
+    {
+        subDirectory :=  "420"
+    }
+
+    return subDirectory
+    
 }
 
 GetStoredIniValue(iniSection, iniKey, iniFileName)

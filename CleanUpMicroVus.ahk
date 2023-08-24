@@ -39,88 +39,73 @@ CleanUpMicroVu(sourceDirectory)
 
         If InStr(sourceFilePath, "\TIEN\") 
         {
-            if (SubStr(A_Now, 1, 8) - SubStr(A_LoopFileTimeModified, 1, 8) < 30)
-            {
-                continue
-            }
+            continue
         }
 
         If InStr(sourceFilePath, "\TVH\") 
         {
-            if (SubStr(A_Now, 1, 8) - SubStr(A_LoopFileTimeModified, 1, 8) < 30)
-            {
-                continue
-            }
+            continue
         }
 
         If InStr(sourceFilePath, "\SHAWN\") 
         {
-            if (SubStr(A_Now, 1, 8) - SubStr(A_LoopFileTimeModified, 1, 8) < 30)
-            {
-                continue
-            }        }
+            continue
+        }
 
         If InStr(sourceFilePath, "\RON\") 
         {
-            if (SubStr(A_Now, 1, 8) - SubStr(A_LoopFileTimeModified, 1, 8) < 30)
-            {
-                continue
-            } 
+            continue
         }
 
         If InStr(sourceFilePath, "\DYLAN\") 
         {
-            if (SubStr(A_Now, 1, 8) - SubStr(A_LoopFileTimeModified, 1, 8) < 30)
-            {
-                continue
-            } 
+            continue
         }
 
         If InStr(sourceFilePath, "\CARRIE\") 
         {
-            if (SubStr(A_Now, 1, 8) - SubStr(A_LoopFileTimeModified, 1, 8) < 30)
-            {
-                continue
-            } 
+            continue
         }
 
         If InStr(sourceFilePath, "\JIM\") 
         {
-            if (SubStr(A_Now, 1, 8) - SubStr(A_LoopFileTimeModified, 1, 8) < 30)
-            {
-                continue
-            } 
+            continue
         }
 
         If InStr(sourceFilePath, "\DON\") 
         {
-            if (SubStr(A_Now, 1, 8) - SubStr(A_LoopFileTimeModified, 1, 8) < 30)
-            {
-                continue
-            } 
+            continue
         }
 
         If InStr(sourceFilePath, "\ADAM\") 
         {
-            if (SubStr(A_Now, 1, 8) - SubStr(A_LoopFileTimeModified, 1, 8) < 30)
-            {
-                continue
-            } 
+            continue
         }
 
         If InStr(sourceFilePath, "\JEFFREY\") 
         {
-            if (SubStr(A_Now, 1, 8) - SubStr(A_LoopFileTimeModified, 1, 8) < 30)
-            {
-                continue
-            } 
+            continue
         }
-        FileDelete, %sourceFilePath%
+
+        If InStr(sourceFilePath, "\MICROVU TEMPLATES\") 
+        {
+            continue
+        }
+
+        If InStr(sourceFilePath, "TEMPLATE") 
+        {
+            continue
+        }
+
+        
+
+        ;MsgBox, "Delete!"
+        FileDelete, %A_LoopFileFullPath%
    }
 }
 
 
-CleanUpMicroVu("\\10.146.50.216\Microvu Programs\")
+;CleanUpMicroVu("\\10.146.50.216\Microvu Programs\")
 CleanUpMicroVu("\\rms-microvuy006\MicroVu Programs\")
 CleanUpMicroVu("\\rms-microvuy008\MicroVu Programs\")
 CleanUpMicroVu("\\rms-microvuy009\Microvu Programs\")

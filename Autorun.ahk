@@ -92,6 +92,7 @@ OpenBackup()
 OpenY26()
 {
     run, explorer "\\rms-microvuy026\Microvu Programs"
+    WinActivate ahk_exe Explorer.EXE
     Return
 }
 
@@ -99,6 +100,7 @@ OpenY26()
 OpenSetupPics()
 {
     run, explorer "V:\Inspect Programs\Micro-Vu\Approved Programs\Microvu\Microvu Setup Pics"
+    WinActivate ahk_exe Explorer.EXE
     Return
 }
 
@@ -106,6 +108,7 @@ OpenSetupPics()
 OpenCMMDirectory()
 {
     run, explorer "V:\Inspect Programs\CMM Programs\B_S Approved Programs\PDF Approved Programs"
+    WinActivate ahk_exe Explorer.EXE
     Return
 }
 
@@ -113,6 +116,7 @@ OpenCMMDirectory()
 OpenWIPDirectory()
 {
     run, explorer "X:\Quality Calibration\Work in Progress\Jeffrey"
+    WinActivate ahk_exe Explorer.EXE
     Return
 }
 
@@ -131,6 +135,7 @@ OpenTickets()
 OpenFourTwentyDirectory()
 {
     run, explorer "V:\Inspect Programs\Micro-Vu\Approved Programs\420\"
+    WinActivate ahk_exe Explorer.EXE
     Return
 }
 
@@ -138,18 +143,21 @@ OpenFourTwentyDirectory()
 OpenThreeFortyOneDirectory()
 {
     run, explorer "V:\Inspect Programs\Micro-Vu\Approved Programs\341\"
+    WinActivate ahk_exe Explorer.EXE
     Return
 }
 
 OpenThreeElevenDirectory()
 {
     run, explorer "V:\Inspect Programs\Micro-Vu\Approved Programs\311\"
+    WinActivate ahk_exe Explorer.EXE
     Return
 }
 
 OpenOverlayDirectory()
 {
     run, explorer "V:\Inspect Programs\Overlays\"
+    WinActivate ahk_exe Explorer.EXE
     Return
 }
 
@@ -173,12 +181,14 @@ OpenAutoCad()
 OpenSmartProfileDirectory()
 {
     run, explorer "V:\Inspect Programs\Micro-Vu\Approved Programs\Smart Profile"
+    WinActivate ahk_exe Explorer.EXE
     Return
 }
 
 OpenKeyenceDirectory()
 {
 	run, explorer "V:\Inspect Programs\Keyence\"
+    WinActivate ahk_exe Explorer.EXE
 	Return
 }
 
