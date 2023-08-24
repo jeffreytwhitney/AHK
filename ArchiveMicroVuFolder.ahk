@@ -23,8 +23,6 @@ if (A_Args.Length() > 0)
 Else
 {
     ;For debugging
-
-    filePathSubDirectory := GetMicroVuFolderSubDirectory("V:\Inspect Programs\Micro-Vu\Approved Programs\311\Pacing\23-01-2211_REV D")
     CopyFolderToSubDirectoryWithFileNameAppend("V:\Inspect Programs\Micro-Vu\Approved Programs\311\Pacing\23-01-2211_REV D", filePathSubDirectory, "test")
 }
 

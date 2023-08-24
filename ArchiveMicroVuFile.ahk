@@ -5,11 +5,7 @@ SetWorkingDir, %A_ScriptDir%
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 
-
 #Include <archivelib>
-
-
-
 
 
 if (A_Args.Length() > 0)

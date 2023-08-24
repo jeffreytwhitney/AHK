@@ -76,9 +76,6 @@ IncrementFileSuffix(fileSuffix)
 }
 
 
-
-
-
 if (A_Args.Length() > 0)
 {
     for n, filePath in A_Args  ; For each parameter (or file dropped onto a script):
