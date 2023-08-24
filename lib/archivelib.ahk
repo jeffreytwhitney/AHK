@@ -1,5 +1,7 @@
 ﻿#NoEnv ; Recommended for performance and compatibility with future AutoHotkey releases.
 
+;Folder Functions----------------------------------------------------------------------------------
+
 CopyFolder(sourceDirectory, iniFileName)
 {
     outputDirectory := GenerateFolderOutputPath(sourceDirectory, iniFileName)
@@ -124,32 +126,12 @@ CopyFolderToSubDirectoryWithFileNameAppend(sourceDirectory, subDirectory, iniFil
     Return
 }
 
-GetIniFilePath(iniFileName)
-{
-    iniPath := A_WorkingDir . "\" iniFileName . ".ini"
-    Return iniPath
-}
-
-GenerateFolderOutputPath(sourceFilePath, iniFileName)
-{
-    trimmedFilePath := RTrim(sourceFilePath, "\")
-    directoryParts := StrSplit(trimmedFilePath , "\")
-    numberOfParts := directoryParts.Length()
-    lastPart := directoryParts[numberOfParts]
-    outputDirectory := GetFolderOutputPath(iniFileName) 
-    If (outputDirectory == "")
-    {
-        return ""
-    }
-    Else
-    {
-        return outputDirectory . "\" . lastPart
-    }
-}
+;File Functions----------------------------------------------------------------------------------
 
 CopyFile(filePath, iniFileName)
 {
     archiveFilePath := GetFileOutputPath(filePath, iniFileName)
+
 
     if (archiveFilePath == "")
     { 
@@ -207,30 +189,10 @@ CopyMicroVuFile(sourceFilePath, iniFileName)
     outputDirectory := GetFolderOutputPath(iniFileName) 
     subDirectory := GetMicroVuFileSubDirectory(sourceFilePath)
     outputDirectory .= subDirectory
-    sourceDirectory := ExtractDirectoryFromFilePath(sourceFilePath)
+    sourceDirectory := GetDirectoryFromFilePath(sourceFilePath)
 
     CopyFileWithFileNameAppend(filename, outputDirectory, sourceDirectory, true)
 
-}
-
-ExtractDirectoryFromFilePath(sourceFilePath)
-{
-    outputPath := ""
-    fileNameParts := StrSplit(sourceFilePath , "\")
-    tmp_last := fileNameParts.Count()
-    for filePartIdx in fileNameParts
-    {
-        if filePartIdx < %tmp_last%
-        {
-            if outputPath != 
-            {
-                outputPath .= "\"
-            }
-            file_part := fileNameParts[filePartIdx] 
-            outputPath .= file_part 
-        }
-    }
-    return outputPath
 }
 
 CopyFileWithFileNameAppend(currentFileName, outputDirectory, sourceDirectory, showMessageBox)
@@ -277,6 +239,8 @@ CopyFileWithFileNameAppend(currentFileName, outputDirectory, sourceDirectory, sh
 
     Return 
 }
+
+;Support Functions----------------------------------------------------------------------------------
 
 GetFileOutputPath(sourceFilePath, iniFileName)
 {
@@ -331,7 +295,7 @@ GetMicroVuFileSubDirectory(dirToCheck)
     partNameSubDirectory := ""
     fileNameParts := StrSplit(dirToCheck , "\")
     tmp_last := fileNameParts.Count()
-    return_value = ""
+    return_value := ""
     
     If InStr(dirToCheck, "\311\")
     {
@@ -368,7 +332,7 @@ GetMicroVuFileSubDirectory(dirToCheck)
     }
     Else
     {
-        return_value = ""
+        return_value := ""
     }
 
     return return_value
@@ -377,7 +341,7 @@ GetMicroVuFileSubDirectory(dirToCheck)
 
 GetMicroVuFolderSubDirectory(dirToCheck)
 {
-    subDirectory = ""
+    subDirectory := ""
     
     If InStr(dirToCheck, "\311\")
     {
@@ -410,5 +374,65 @@ StoreIniValue(iniValue, iniFileName, iniSection, iniKey)
     iniFilePath := GetIniFilePath(iniFileName)
     IniWrite, %iniValue%, %iniFilePath%, %iniSection%, %iniKey%
     Return
+}
+
+GetIniFilePath(iniFileName)
+{
+    iniPath := A_WorkingDir . "\" iniFileName . ".ini"
+    Return iniPath
+}
+
+GetDirectoryFromFilePath(sourceFilePath)
+{
+    outputPath := ""
+    fileNameParts := StrSplit(sourceFilePath , "\")
+    tmp_last := fileNameParts.Count()
+    for filePartIdx in fileNameParts
+    {
+        if filePartIdx < %tmp_last%
+        {
+            if outputPath != 
+            {
+                outputPath .= "\"
+            }
+            file_part := fileNameParts[filePartIdx] 
+            outputPath .= file_part 
+        }
+    }
+    return outputPath
+}
+
+GenerateFolderOutputPath(sourceFilePath, iniFileName)
+{
+    trimmedFilePath := RTrim(sourceFilePath, "\")
+    directoryParts := StrSplit(trimmedFilePath , "\")
+    numberOfParts := directoryParts.Length()
+    lastPart := directoryParts[numberOfParts]
+    outputDirectory := GetFolderOutputPath(iniFileName) 
+    If (outputDirectory == "")
+    {
+        return ""
+    }
+    Else
+    {
+        return outputDirectory . "\" . lastPart
+    }
+}
+
+GetFileExtensionFromFilePath(sourceFilePath)
+{
+    if Instr(sourceFilePath, "/")
+    {
+        fileNamePathParts := StrSplit(sourceFilePath , "/")
+        fileName := fileNamePathParts[fileNamePathParts.Count()]
+    }
+    Else
+    {
+        fileName := sourceFilePath
+    }
+    
+    fileNameParts := StrSplit(sourceFilePath , ".")
+    fileExtension := "." . fileNameParts[2]
+    return fileExtension
 }
 
